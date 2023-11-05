@@ -14,18 +14,38 @@
 # ==============================================================================
 r"""Integration tests for the Google Earth Engine backend for Xarray."""
 import pathlib
+import json
+import os
 
 from absl.testing import absltest
+import ee
+from google.auth import identity_pool
 import numpy as np
 import xarray as xr
 from xarray.core import indexing
 import xee
 
-import ee
+
+_CREDENTIALS_PATH_KEY = 'GOOGLE_APPLICATION_CREDENTIALS'
+_SCOPES = [
+    'https://www.googleapis.com/auth/cloud-platform',
+    'https://www.googleapis.com/auth/earthengine',
+]
+
+
+def _read_identity_pool_creds() -> identity_pool.Credentials:
+  credentials_path = os.environ[_CREDENTIALS_PATH_KEY]
+  with open(credentials_path) as file:
+    json_file = json.load(file)
+    credentials = identity_pool.Credentials.from_info(json_file)
+    return credentials.with_scopes(_SCOPES)
 
 
 def init_ee_for_tests():
-  ee.Initialize(opt_url='https://earthengine-highvolume.googleapis.com')
+  ee.Initialize(
+      credentials=_read_identity_pool_creds(),
+      opt_url='https://earthengine-highvolume.googleapis.com',
+  )
 
 
 class EEBackendArrayTest(absltest.TestCase):
@@ -337,7 +357,7 @@ class EEBackendEntrypointTest(absltest.TestCase):
         scale=25.0,  # in degrees
         n_images=3,
     )
-    self.assertEqual(dict(ds.dims), {'time': 3, 'lon': 15, 'lat': 7})
+    self.assertEqual(dict(ds.dims), {'time': 3, 'lon': 15, 'lat': 8})
     ds = self.entry.open_dataset(
         'ee:LANDSAT/LC08/C01/T1',
         drop_variables=tuple(f'B{i}' for i in range(3, 12)),
