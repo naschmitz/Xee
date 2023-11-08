@@ -26,7 +26,6 @@ import setuptools
 
 tests_requires = [
     "absl-py",
-    # "dask",
     "pytest",
     "pyink",
 ]
@@ -47,7 +46,7 @@ setuptools.setup(
     description="A Google Earth Engine extension for Xarray.",
     long_description=open("README.md", "r", encoding="utf-8").read(),
     long_description_content_type="text/markdown",
-    install_requires=["xarray", "earthengine-api>=0.1.374", "pyproj", "affine"],
+    install_requires=["xarray[parallel]", "earthengine-api>=0.1.374", "pyproj", "affine"],
     extras_require={
         "tests": tests_requires,
         "examples": examples_require,
