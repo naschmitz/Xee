@@ -26,7 +26,7 @@ import setuptools
 
 tests_requires = [
     "absl-py",
-    "dask",
+    # "dask",
     "pytest",
     "pyink",
 ]
