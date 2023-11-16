@@ -293,7 +293,7 @@ class EarthEngineStore(common.AbstractDataStore):
 
     info = ee.List([rpc for _, rpc in rpcs]).getInfo()
 
-    return Dict(zip((name for name, _ in rpcs), info))
+    return dict(zip((name for name, _ in rpcs), info))
 
   @property
   def image_collection_properties(self) -> Tuple[List[str], List[str]]:
