@@ -24,7 +24,7 @@ import importlib
 import math
 import os
 import sys
-from typing import Any, Dict, List, Iterable, Literal, Optional, Tuple, Union
+from typing import Any, Iterable, Literal, Optional, Union
 from urllib import parse
 import warnings
 
@@ -41,7 +41,7 @@ from xarray.core import indexing
 from xarray.core import utils
 from xee import types
 
-from google3.geo.gestalt.client.python import ee
+import ee
 
 
 assert sys.version_info >= (3, 8)
